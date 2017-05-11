@@ -16,39 +16,37 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package services.videa.tutorials.bpm.processes;
+package services.videa.tutorials.bpm.decisions;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
+import static org.junit.Assert.*;
 
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Deployment(resources = { 
-		"processes/identification-workflow.bpmn",
-		"processes/identification-data-check.dmn"
-		})
-public class ProcessesTest {
+@Deployment(resources = { "decisions/hit-policies.dmn" })
+public class HitPoliciesTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
 
-	private RuntimeService runtimeService = null;
-
 	@Before
 	public void setUp() throws Exception {
-		runtimeService = processEngine.getRuntimeService();
 	}
 
 	@Test
-	public void happyPath() {
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Process_Identification");
-		
-		assertThat(processInstance).isEnded();
+	public void unique() {
+		VariableMap variables = Variables.createVariables().putValue("key", "B");
+
+		DmnDecisionTableResult decisionResult = processEngine.getDecisionService()
+				.evaluateDecisionTableByKey("decision_unique", variables);
+
+		assertEquals("Letter B", decisionResult.getSingleResult().getEntry("value"));
 	}
 
 }
