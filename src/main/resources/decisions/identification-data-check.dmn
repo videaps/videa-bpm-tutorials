@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="definitions_1ew0mov" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="decision_identification_data_check" name="Identification Data Check">
+    <decisionTable id="decisionTable" hitPolicy="FIRST">
+      <input id="input1" label="DOB" camunda:inputVariable="">
+        <inputExpression id="inputExpression1" typeRef="string">        <text>dob</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Available" name="available" typeRef="boolean" />
+      <rule id="row-791942822-2">
+        <inputEntry id="UnaryTests_10bucyk">        <text><![CDATA["13/08/2000"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_1mxovyg">        <text>false</text>
+</outputEntry>
+      </rule>
+      <rule id="row-791942822-1">
+        <inputEntry id="UnaryTests_0l4ejk3">        <text></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_13qzgno">        <text>true</text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
