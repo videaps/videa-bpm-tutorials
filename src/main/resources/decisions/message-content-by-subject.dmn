@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="definitions_00t127n" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="decision_message_content_by_subject" name="Message Content By Subject">
+    <decisionTable id="decisionTable">
+      <input id="input1" label="Subject" camunda:inputVariable="">
+        <inputExpression id="inputExpression1" typeRef="string">        <text>subject</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Content" name="content" typeRef="string" />
+      <rule id="row-235253485-1">
+        <description></description>
+        <inputEntry id="UnaryTests_00leyow" expressionLanguage="feel">        <text><![CDATA["Kartenlesefehler"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0sfji0z">        <text><![CDATA["Der Nutzer hat einen Kartenlesefehler am Fahrzeug bekommen"]]></text>
+</outputEntry>
+      </rule>
+      <rule id="row-235253485-2">
+        <inputEntry id="UnaryTests_1w7x2ju">        <text><![CDATA["Rechnungsanfrage"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_011ht0e">        <text><![CDATA["Der Nutzer hat eine Frage zu seiner Rechnung"]]></text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

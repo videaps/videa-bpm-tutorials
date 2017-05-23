@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.7.2">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.8.0">
   <bpmn:collaboration id="Collaboration_Start_Message_Event">
     <bpmn:participant id="Participant_Sender" name="Sender" processRef="Process_Sender" />
     <bpmn:participant id="Participant_Recipient" name="Recipient" processRef="Process_Recipient" />
     <bpmn:messageFlow id="MessageFlow_Task_Send_Message_2_Start_Event_Recipient" name="Task Send Message 2 Start Event Recipient" sourceRef="Task_Send_Message" targetRef="StartEvent_Recipient" />
   </bpmn:collaboration>
   <bpmn:process id="Process_Sender" name="Sender" isExecutable="true">
-    <bpmn:sequenceFlow id="SequenceFlow_0jdr7d4" sourceRef="StartEvent_Sender" targetRef="Task_Send_Message" />
+    <bpmn:sequenceFlow id="SequenceFlow_0jdr7d4" sourceRef="StartEvent_Sender" targetRef="Task_Read_email_content" />
     <bpmn:sequenceFlow id="SequenceFlow_1q9hn0b" sourceRef="Task_Send_Message" targetRef="EndEvent_Sender" />
-    <bpmn:endEvent id="EndEvent_Sender" name="End Event Sender">
-      <bpmn:incoming>SequenceFlow_1q9hn0b</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:startEvent id="StartEvent_Sender" name="Start Event Sender">
       <bpmn:outgoing>SequenceFlow_0jdr7d4</bpmn:outgoing>
     </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1gj1g2b" sourceRef="Task_Read_email_content" targetRef="Task_Send_Message" />
+    <bpmn:endEvent id="EndEvent_Sender" name="End Event Sender">
+      <bpmn:incoming>SequenceFlow_1q9hn0b</bpmn:incoming>
+    </bpmn:endEvent>
     <bpmn:scriptTask id="Task_Send_Message" name="Send Message" scriptFormat="groovy">
-      <bpmn:incoming>SequenceFlow_0jdr7d4</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1gj1g2b</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1q9hn0b</bpmn:outgoing>
-      <bpmn:script><![CDATA[println "Send Message"]]></bpmn:script>
+      <bpmn:script>println content</bpmn:script>
     </bpmn:scriptTask>
+    <bpmn:businessRuleTask id="Task_Read_email_content" name="Read E-Mail Content" camunda:resultVariable="content" camunda:decisionRef="decision_message_content_by_subject" camunda:mapDecisionResult="singleEntry">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="subject">
+            <camunda:script scriptFormat="groovy"><![CDATA["Kartenlese" + "fehler"]]></camunda:script>
+          </camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0jdr7d4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1gj1g2b</bpmn:outgoing>
+    </bpmn:businessRuleTask>
   </bpmn:process>
   <bpmn:process id="Process_Recipient" name="Recipient" isExecutable="true">
     <bpmn:sequenceFlow id="SequenceFlow_1sm4a6a" sourceRef="StartEvent_Recipient" targetRef="Task_Log_Message" />
@@ -40,7 +52,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_Start_Message_Event">
       <bpmndi:BPMNShape id="Participant_1022dmt_di" bpmnElement="Participant_Sender">
-        <dc:Bounds x="123" y="82" width="600" height="250" />
+        <dc:Bounds x="123" y="82" width="908" height="250" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_Sender">
         <dc:Bounds x="197" y="161" width="36" height="36" />
@@ -50,24 +62,22 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0jdr7d4_di" bpmnElement="SequenceFlow_0jdr7d4">
         <di:waypoint xsi:type="dc:Point" x="233" y="179" />
-        <di:waypoint xsi:type="dc:Point" x="287" y="179" />
-        <di:waypoint xsi:type="dc:Point" x="287" y="179" />
-        <di:waypoint xsi:type="dc:Point" x="365" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="459" y="179" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="257" y="173" width="90" height="12" />
+          <dc:Bounds x="301" y="158" width="90" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_1opq61h_di" bpmnElement="EndEvent_Sender">
-        <dc:Bounds x="590" y="161" width="36" height="36" />
+        <dc:Bounds x="895" y="161" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="565" y="201" width="88" height="12" />
+          <dc:Bounds x="870" y="201" width="88" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1q9hn0b_di" bpmnElement="SequenceFlow_1q9hn0b">
-        <di:waypoint xsi:type="dc:Point" x="465" y="179" />
-        <di:waypoint xsi:type="dc:Point" x="590" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="747" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="895" y="179" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="482.5" y="158" width="90" height="12" />
+          <dc:Bounds x="776" y="158" width="90" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_1d3yb56_di" bpmnElement="Participant_Recipient">
@@ -104,19 +114,29 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="MessageFlow_17fftun_di" bpmnElement="MessageFlow_Task_Send_Message_2_Start_Event_Recipient">
-        <di:waypoint xsi:type="dc:Point" x="415" y="219" />
-        <di:waypoint xsi:type="dc:Point" x="415" y="343" />
+        <di:waypoint xsi:type="dc:Point" x="697" y="219" />
+        <di:waypoint xsi:type="dc:Point" x="697" y="343" />
         <di:waypoint xsi:type="dc:Point" x="201" y="343" />
         <di:waypoint xsi:type="dc:Point" x="201" y="466" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="268" y="322" width="80" height="36" />
+          <dc:Bounds x="409" y="322" width="80" height="36" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ScriptTask_0vysa6x_di" bpmnElement="Task_Log_Message">
         <dc:Bounds x="362" y="445" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ScriptTask_00w2891_di" bpmnElement="Task_Send_Message">
-        <dc:Bounds x="365" y="139" width="100" height="80" />
+        <dc:Bounds x="647" y="139" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1gj1g2b_di" bpmnElement="SequenceFlow_1gj1g2b">
+        <di:waypoint xsi:type="dc:Point" x="559" y="179" />
+        <di:waypoint xsi:type="dc:Point" x="647" y="179" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="603" y="158" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BusinessRuleTask_1c4n93c_di" bpmnElement="Task_Read_email_content">
+        <dc:Bounds x="459" y="139" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

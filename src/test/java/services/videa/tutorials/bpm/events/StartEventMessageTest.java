@@ -29,7 +29,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @Deployment(resources = { 
-		"events/start-event-message.bpmn"
+		"events/start-event-message.bpmn",
+		"decisions/message-content-by-subject.dmn"
 		})
 public class StartEventMessageTest {
 
