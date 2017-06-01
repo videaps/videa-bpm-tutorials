@@ -18,11 +18,15 @@
 */
 package services.videa.tutorials.bpm.entities;
 
+import java.util.List;
+
 public class Person {
 
 	private String firstname;
 	private String surname;
 	private String dob;
+	private List<Address> addresses;
+	
 
 	public Person(String firstname, String surname, String dob) {
 		super();
@@ -34,6 +38,15 @@ public class Person {
 	@Override
 	public String toString() {
 		return "Person [firstname=" + firstname + ", surname=" + surname + ", dob=" + dob + "]";
+	}
+
+	
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
 	public String getFirstname() {

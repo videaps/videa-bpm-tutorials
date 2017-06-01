@@ -16,19 +16,41 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package services.videa.tutorials.bpm;
+package services.videa.tutorials.bpm.entities;
 
-import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+public class Address {
 
-/**
- *
- */
-@ProcessApplication("bpm")
-public class BpmApplication extends ServletProcessApplication {
+	private String street;
+	private String no;
+	private String postCode;
+	private String city;
 	
-	public static void main(String[] args) {
-		System.out.println(new Exception().getStackTrace()[0].getMethodName());
+	
+	public String getStreet() {
+		return street;
 	}
-
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
+	public String getPostCode() {
+		return postCode;
+	}
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
+	
+	
 }

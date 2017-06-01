@@ -16,19 +16,15 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package services.videa.tutorials.bpm;
+package services.videa.tutorials.bpm.tasks;
 
-import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-/**
- *
- */
-@ProcessApplication("bpm")
-public class BpmApplication extends ServletProcessApplication {
-	
-	public static void main(String[] args) {
-		System.out.println(new Exception().getStackTrace()[0].getMethodName());
+public class DropdownDelegate implements JavaDelegate {
+
+	public void execute(DelegateExecution execution) throws Exception {
+		
 	}
 
 }

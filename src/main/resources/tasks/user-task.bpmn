@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.8.1" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn:process id="Process_UserTask" name="User Task" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_MonthRequired" name="Month Required">
+      <bpmn:outgoing>SequenceFlow_1kyalpu</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1kyalpu" sourceRef="StartEvent_MonthRequired" targetRef="Task_InitialiseDropdown" />
+    <bpmn:sequenceFlow id="SequenceFlow_1bitxkp" sourceRef="Task_InitialiseDropdown" targetRef="Task_SetDropdownInForm" />
+    <bpmn:userTask id="Task_SetDropdownInForm" name="Set Dropdown In Form">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="salutation" label="Anrede" type="enum">
+            <camunda:value id="mr" name="Herr" />
+            <camunda:value id="mrs" name="Frau" />
+            <camunda:value id="co" name="Firma" />
+          </camunda:formField>
+          <camunda:formField id="name" label="Name" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1bitxkp</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0cpkc98</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_InitialiseDropdown" name="Initialise Dropdown" camunda:class="services.videa.tutorials.bpm.tasks.DropdownDelegate">
+      <bpmn:documentation>Create an object and set some attribute values.</bpmn:documentation>
+      <bpmn:incoming>SequenceFlow_1kyalpu</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1bitxkp</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Done" name="Done">
+      <bpmn:incoming>SequenceFlow_0cpkc98</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0cpkc98" sourceRef="Task_SetDropdownInForm" targetRef="EndEvent_Done" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_UserTask">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_MonthRequired">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="138" width="77" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1kyalpu_di" bpmnElement="SequenceFlow_1kyalpu">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="324" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="266.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1bitxkp_di" bpmnElement="SequenceFlow_1bitxkp">
+        <di:waypoint xsi:type="dc:Point" x="424" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="505" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464.5" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1qn5f2o_di" bpmnElement="Task_SetDropdownInForm">
+        <dc:Bounds x="505" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1s74kmo_di" bpmnElement="Task_InitialiseDropdown">
+        <dc:Bounds x="324" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_19j1si4_di" bpmnElement="EndEvent_Done">
+        <dc:Bounds x="701" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="706" y="142" width="26" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0cpkc98_di" bpmnElement="SequenceFlow_0cpkc98">
+        <di:waypoint xsi:type="dc:Point" x="605" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="701" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="653" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

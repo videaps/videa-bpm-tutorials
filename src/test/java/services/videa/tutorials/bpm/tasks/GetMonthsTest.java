@@ -16,19 +16,30 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package services.videa.tutorials.bpm;
+package services.videa.tutorials.bpm.tasks;
 
-import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
+import static org.junit.Assert.assertEquals;
 
-/**
- *
- */
-@ProcessApplication("bpm")
-public class BpmApplication extends ServletProcessApplication {
-	
-	public static void main(String[] args) {
-		System.out.println(new Exception().getStackTrace()[0].getMethodName());
+import java.text.DateFormatSymbols;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class GetMonthsTest {
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@Test
+	public void test() {
+		String[] monthArray = DateFormatSymbols.getInstance().getMonths();
+		List<String> monthList = Arrays.asList(monthArray).subList(0, 12);
+		System.out.println(monthList);
+		
+		assertEquals(12, monthList.size());
 	}
 
 }
