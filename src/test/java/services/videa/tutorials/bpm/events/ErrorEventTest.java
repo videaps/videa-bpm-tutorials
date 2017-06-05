@@ -19,12 +19,10 @@
 package services.videa.tutorials.bpm.events;
 
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.junit.Before;
