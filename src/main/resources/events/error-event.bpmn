@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.8.0">
+  <bpmn:collaboration id="Collaboration_ErrorEvent">
+    <bpmn:participant id="Participant_ErrorEvent" name="Error Event" processRef="Process_ErrorEvent" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_ErrorEvent" name="Error Event" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_DataEnteredAndSafeClicked" name="Data entered and safe clicked">
+      <bpmn:outgoing>SequenceFlow_1a5ck5o</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1a5ck5o" sourceRef="StartEvent_DataEnteredAndSafeClicked" targetRef="Task_ValidateInputValues" />
+    <bpmn:sequenceFlow id="SequenceFlow_0p043qe" name="inputValuesValid" sourceRef="Task_ValidateInputValues" targetRef="ExclusiveGateway_InputValuesValid" />
+    <bpmn:sequenceFlow id="SequenceFlow_151sowy" name="inputValuesValid == true" sourceRef="ExclusiveGateway_InputValuesValid" targetRef="Task_LogInputValues">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{inputValuesValid == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0xe9qgj" sourceRef="Task_LogInputValues" targetRef="EndEvent_InputValuesComplete" />
+    <bpmn:sequenceFlow id="SequenceFlow_InputValuesValidFalse" name="inputValuesValid == false" sourceRef="ExclusiveGateway_InputValuesValid" targetRef="IntermediateThrowEvent_InputValuesIncomplete">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ inputValuesValid == false }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:subProcess id="SubProcess_MessagePool" name="Message Pool" triggeredByEvent="true">
+      <bpmn:endEvent id="EndEvent_MessageInPool" name="Message In Pool">
+        <bpmn:incoming>SequenceFlow_0ulyhog</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:startEvent id="StartEvent_InputValuesIncomplete" name="Input Values Incomplete">
+        <bpmn:outgoing>SequenceFlow_0kh72gx</bpmn:outgoing>
+        <bpmn:errorEventDefinition errorRef="Error_072q858" />
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_0kh72gx" sourceRef="StartEvent_InputValuesIncomplete" targetRef="Task_13hqyv3" />
+      <bpmn:sequenceFlow id="SequenceFlow_0ulyhog" sourceRef="Task_13hqyv3" targetRef="EndEvent_MessageInPool" />
+      <bpmn:scriptTask id="Task_13hqyv3" name="Put Message Into Pool" scriptFormat="groovy">
+        <bpmn:incoming>SequenceFlow_0kh72gx</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0ulyhog</bpmn:outgoing>
+        <bpmn:script><![CDATA[println "Put Message Into Pool";]]></bpmn:script>
+      </bpmn:scriptTask>
+    </bpmn:subProcess>
+    <bpmn:endEvent id="EndEvent_InputValuesComplete" name="Input Values Complete">
+      <bpmn:incoming>SequenceFlow_0xe9qgj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Task_ValidateInputValues" name="Validate Input Values" scriptFormat="groovy" camunda:resultVariable="inputValuesValid">
+      <bpmn:incoming>SequenceFlow_1a5ck5o</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0p043qe</bpmn:outgoing>
+      <bpmn:script>inputValuesValid = false;</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_InputValuesValid" name="Input Values Valid?">
+      <bpmn:incoming>SequenceFlow_0p043qe</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_InputValuesValidFalse</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_151sowy</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="IntermediateThrowEvent_InputValuesIncomplete" name="Input Values Incomplete">
+      <bpmn:incoming>SequenceFlow_InputValuesValidFalse</bpmn:incoming>
+      <bpmn:errorEventDefinition errorRef="Error_072q858" />
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Task_LogInputValues" name="Log Input Values" scriptFormat="groovy">
+      <bpmn:incoming>SequenceFlow_151sowy</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0xe9qgj</bpmn:outgoing>
+      <bpmn:script>println inputValuesValid;</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmn:error id="Error_072q858" name="Error_InputValuesIncomplete" errorCode="1000" />
+  <bpmn:signal id="Signal_087tulo" name="Signal_2hu0co9" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_ErrorEvent">
+      <bpmndi:BPMNShape id="Participant_1jr7dm6_di" bpmnElement="Participant_ErrorEvent">
+        <dc:Bounds x="7" y="7" width="1000" height="578" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_DataEnteredAndSafeClicked">
+        <dc:Bounds x="57" y="49" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="34" y="85" width="84" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0gy82sq_di" bpmnElement="EndEvent_InputValuesComplete">
+        <dc:Bounds x="912" y="49" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="901" y="89" width="60" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1a5ck5o_di" bpmnElement="SequenceFlow_1a5ck5o">
+        <di:waypoint xsi:type="dc:Point" x="93" y="67" />
+        <di:waypoint xsi:type="dc:Point" x="184" y="67" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="93.5" y="46" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0xe9qgj_di" bpmnElement="SequenceFlow_0xe9qgj">
+        <di:waypoint xsi:type="dc:Point" x="763" y="67" />
+        <di:waypoint xsi:type="dc:Point" x="912" y="67" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="837.5" y="46" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_12271vd_di" bpmnElement="IntermediateThrowEvent_InputValuesIncomplete">
+        <dc:Bounds x="450" y="191" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="440" y="231" width="60" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0jykzh4_di" bpmnElement="ExclusiveGateway_InputValuesValid" isMarkerVisible="true">
+        <dc:Bounds x="443" y="42" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438" y="12" width="60" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0p043qe_di" bpmnElement="SequenceFlow_0p043qe">
+        <di:waypoint xsi:type="dc:Point" x="284" y="67" />
+        <di:waypoint xsi:type="dc:Point" x="443" y="67" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="325.97222222222223" y="46" width="78" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1vsliu2_di" bpmnElement="SequenceFlow_InputValuesValidFalse">
+        <di:waypoint xsi:type="dc:Point" x="468" y="92" />
+        <di:waypoint xsi:type="dc:Point" x="468" y="191" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="475" y="126.35294117647061" width="78" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_053ktid_di" bpmnElement="EndEvent_MessageInPool">
+        <dc:Bounds x="692" y="431" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="671" y="471" width="81" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_151sowy_di" bpmnElement="SequenceFlow_151sowy">
+        <di:waypoint xsi:type="dc:Point" x="493" y="67" />
+        <di:waypoint xsi:type="dc:Point" x="663" y="67" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="528.7346938775511" y="31" width="78" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SubProcess_040q6cw_di" bpmnElement="SubProcess_MessagePool" isExpanded="true">
+        <dc:Bounds x="105" y="348" width="686" height="193" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0a29p99_di" bpmnElement="StartEvent_InputValuesIncomplete">
+        <dc:Bounds x="159" y="431" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="149" y="471" width="60" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0kh72gx_di" bpmnElement="SequenceFlow_0kh72gx">
+        <di:waypoint xsi:type="dc:Point" x="195" y="449" />
+        <di:waypoint xsi:type="dc:Point" x="261" y="449" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="228" y="428" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ulyhog_di" bpmnElement="SequenceFlow_0ulyhog">
+        <di:waypoint xsi:type="dc:Point" x="361" y="449" />
+        <di:waypoint xsi:type="dc:Point" x="692" y="449" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="481.5" y="428" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_0puyoo6_di" bpmnElement="Task_ValidateInputValues">
+        <dc:Bounds x="184" y="27" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_1fxu0u9_di" bpmnElement="Task_LogInputValues">
+        <dc:Bounds x="663" y="27" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_154zr34_di" bpmnElement="Task_13hqyv3">
+        <dc:Bounds x="261" y="409" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
