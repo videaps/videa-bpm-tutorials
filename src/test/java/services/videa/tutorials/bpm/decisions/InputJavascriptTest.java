@@ -29,8 +29,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Deployment(resources = { "decisions/input-expression.dmn" })
-public class InputExpressionTest {
+@Deployment(resources = { "decisions/input-javascript.dmn" })
+public class InputJavascriptTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
@@ -45,7 +45,7 @@ public class InputExpressionTest {
 				.putValueTyped("firstname", Variables.stringValue("Oli"));
 
 		DmnDecisionTableResult decisionResult = processEngine.getDecisionService()
-				.evaluateDecisionTableByKey("input_expression", variables);
+				.evaluateDecisionTableByKey("input_javascript", variables);
 
 		assertEquals(true, decisionResult.getSingleResult().getEntry("valid"));
 	}
