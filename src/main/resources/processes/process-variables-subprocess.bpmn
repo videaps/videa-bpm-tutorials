@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.8.1">
+  <bpmn:collaboration id="Collaboration_1b76ojg">
+    <bpmn:participant id="Participant_ProcessVariablesSubprocess" name="Process Variables Subprocess" processRef="Process_ProcessVariablesSubprocess" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_ProcessVariablesSubprocess" name="Process Variables Subprocess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_0inovdr</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0inovdr" sourceRef="StartEvent_1" targetRef="Task_LogVariables" />
+    <bpmn:sequenceFlow id="SequenceFlow_1lce5lg" sourceRef="Task_LogVariables" targetRef="Task_CheckVariables" />
+    <bpmn:userTask id="Task_CheckVariables" name="Check Variables">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="name" label="#{myName}" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1lce5lg</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_15omocz</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_18ms535">
+      <bpmn:incoming>SequenceFlow_15omocz</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_15omocz" sourceRef="Task_CheckVariables" targetRef="EndEvent_18ms535" />
+    <bpmn:scriptTask id="Task_LogVariables" name="Log Variables" scriptFormat="groovy">
+      <bpmn:incoming>SequenceFlow_0inovdr</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1lce5lg</bpmn:outgoing>
+      <bpmn:script><![CDATA[println "Your name is " + myName;
+println "Please confirm.";]]></bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1b76ojg">
+      <bpmndi:BPMNShape id="Participant_0t3areq_di" bpmnElement="Participant_ProcessVariablesSubprocess">
+        <dc:Bounds x="123" y="77" width="906" height="266" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="176" y="121" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="149" y="157" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0inovdr_di" bpmnElement="SequenceFlow_0inovdr">
+        <di:waypoint xsi:type="dc:Point" x="212" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="318" y="139" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="265" y="118" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1lce5lg_di" bpmnElement="SequenceFlow_1lce5lg">
+        <di:waypoint xsi:type="dc:Point" x="418" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="538" y="139" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="478" y="118" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_06kbuhw_di" bpmnElement="Task_CheckVariables">
+        <dc:Bounds x="538" y="99" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_18ms535_di" bpmnElement="EndEvent_18ms535">
+        <dc:Bounds x="754" y="121" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="772" y="161" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_15omocz_di" bpmnElement="SequenceFlow_15omocz">
+        <di:waypoint xsi:type="dc:Point" x="638" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="754" y="139" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="696" y="118" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_0pvy6s6_di" bpmnElement="Task_LogVariables">
+        <dc:Bounds x="318" y="99" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
