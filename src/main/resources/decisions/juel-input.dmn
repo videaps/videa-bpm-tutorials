@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="definitions_07rmi0o" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="decision_juel_input" name="JUEL Input">
+    <decisionTable id="decisionTable">
+      <input id="input1" label="Fahrzeugklasse" camunda:inputVariable="^[MNOTLCR]">
+        <inputExpression id="inputExpression1" typeRef="string">        <text>fahrzeugklasse</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Valid" name="valid" typeRef="boolean" />
+      <rule id="row-946102534-1">
+        <inputEntry id="UnaryTests_16smhj5">        <text><![CDATA["M"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0gwm4n4">        <text>true</text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
