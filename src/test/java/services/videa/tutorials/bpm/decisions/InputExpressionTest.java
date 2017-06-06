@@ -25,12 +25,13 @@ import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
+import org.camunda.bpm.engine.variable.value.TypedValue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Deployment(resources = { "decisions/java-script-input.dmn" })
-public class JavaScriptInputTest {
+@Deployment(resources = { "decisions/input-expression.dmn" })
+public class InputExpressionTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
@@ -41,10 +42,10 @@ public class JavaScriptInputTest {
 
 	@Test
 	public void unique() {
-		VariableMap variables = Variables.createVariables().putValue("fahrzeugklasse", "BBB");
+		VariableMap variables = Variables.createVariables().putValueTyped("firstname", Variables.stringValue("Oli"));
 
 		DmnDecisionTableResult decisionResult = processEngine.getDecisionService()
-				.evaluateDecisionTableByKey("decision", variables);
+				.evaluateDecisionTableByKey("input_expression", variables);
 
 		assertEquals(true, decisionResult.getSingleResult().getEntry("valid"));
 	}
