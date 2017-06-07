@@ -33,8 +33,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Deployment(resources = { "processes/rule-expression-special-characters.bpmn" })
-public class RuleExpressionSpecialCharactersTest {
+@Deployment(resources = { "processes/process-junit-jump-to-task.bpmn" })
+public class ProcessJunitJumpToTaskTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
@@ -54,10 +54,8 @@ public class RuleExpressionSpecialCharactersTest {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(1971, 7, 13);
 
-		VariableMap variables = Variables.createVariables().putValue("field", "OliverHock");
-
 		ProcessInstance processInstance = runtimeService
-				.startProcessInstanceByKey("Process_RuleExpressionSpecialCharacters", variables);
+				.startProcessInstanceByKey("Process_ProcessJunitJumpToTask");
 
 		assertThat(processInstance).isEnded();
 	}
