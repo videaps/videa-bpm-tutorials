@@ -33,18 +33,21 @@ public class RegexTest {
 	}
 
 	@Test
-	public void test() {
+	public void date() {
 		String datePattern = "(18[8-9]\\d|19\\d\\d|20\\d\\d|0000)(0[1-9]|1[012]|00)(0[1-9]|1\\d|2\\d|3[01]|00)";
         
 		Pattern pattern = Pattern.compile(datePattern);
         Matcher matcher = pattern.matcher("19710813");
 
-        while (matcher.find()) {
-            System.out.print("Start index: " + matcher.start());
-            System.out.print(" End index: " + matcher.end() + " ");
-            System.out.println(matcher.group());
-        }
-        
+        assertTrue(matcher.matches());
+	}
+
+	
+	@Test
+	public void specialChars() {
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{10,10}$");
+        Matcher matcher = pattern.matcher("OliverHock");
+
         assertTrue(matcher.matches());
 	}
 

@@ -33,10 +33,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Deployment(resources = { 
-		"processes/rule-date-check.bpmn"
-		})
-public class RuleDateCheckTest {
+@Deployment(resources = { "processes/rule-expression-special-characters.bpmn" })
+public class RuleExpressionSpecialCharactersTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
@@ -55,13 +53,12 @@ public class RuleDateCheckTest {
 	public void throwErrorEvent() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(1971, 7, 13);
-		
-		VariableMap variables = Variables.createVariables()
-				.putValue("date", calendar.getTime())
-				;
 
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Process_DmnDateCheck", variables);
-		
+		VariableMap variables = Variables.createVariables().putValue("field", "OliverHock");
+
+		ProcessInstance processInstance = runtimeService
+				.startProcessInstanceByKey("Process_RuleExpressionSpecialCharacters", variables);
+
 		assertThat(processInstance).isEnded();
 	}
 
