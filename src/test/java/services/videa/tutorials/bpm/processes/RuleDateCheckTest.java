@@ -19,28 +19,33 @@
 package services.videa.tutorials.bpm.processes;
 
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
-import static org.junit.Assert.assertEquals;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 @Deployment(resources = { 
-		"processes/process-variables-main.bpmn",
-		"processes/process-variables-subprocess.bpmn"
+		"processes/rule-date-check.bpmn"
 		})
-public class ProcessVariablesTest {
+public class RuleDateCheckTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
 
 	private RuntimeService runtimeService = null;
+	@SuppressWarnings("unused")
 	private TaskService taskService = null;
 
 	@Before
@@ -51,15 +56,15 @@ public class ProcessVariablesTest {
 
 	@Test
 	public void throwErrorEvent() {
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Process_ProcessVariablesMain");
-		assertThat(processInstance).isActive();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(1971, 7, 13);
 		
-		Task task = taskService.createTaskQuery().taskName("Check Variables").singleResult();
-		assertEquals("Check Variables", task.getName());
+		VariableMap variables = Variables.createVariables()
+				.putValue("date", calendar.getTime())
+				;
 
-		assertThat(processInstance).isNotEnded();
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Process_DmnDateCheck", variables);
 		
-		taskService.complete(task.getId());
 		assertThat(processInstance).isEnded();
 	}
 

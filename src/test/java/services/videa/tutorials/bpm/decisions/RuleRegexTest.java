@@ -16,51 +16,49 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package services.videa.tutorials.bpm.processes;
+package services.videa.tutorials.bpm.decisions;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Deployment(resources = { 
-		"processes/process-variables-main.bpmn",
-		"processes/process-variables-subprocess.bpmn"
-		})
-public class ProcessVariablesTest {
+@Deployment(resources = { "decisions/rule-regex.dmn" })
+public class RuleRegexTest {
 
 	@Rule
 	public ProcessEngineRule processEngine = new ProcessEngineRule();
 
-	private RuntimeService runtimeService = null;
-	private TaskService taskService = null;
-
 	@Before
 	public void setUp() throws Exception {
-		runtimeService = processEngine.getRuntimeService();
-		taskService = processEngine.getTaskService();
 	}
 
 	@Test
-	public void throwErrorEvent() {
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Process_ProcessVariablesMain");
-		assertThat(processInstance).isActive();
-		
-		Task task = taskService.createTaskQuery().taskName("Check Variables").singleResult();
-		assertEquals("Check Variables", task.getName());
+	public void test() {
+		VariableMap variables = Variables.createVariables()
+				.putValue("rechtsform", "N")
+				.putValue("anrede", "x")
+				.putValue("vorname", "Oli")
+				.putValue("familienname", "Hock")
+				.putValueTyped("geburtsdatum", Variables.stringValue("19710813"))
+				.putValue("geburtsort", "Beckum")
+				.putValue("firmenname", "Videa")
+				.putValue("vereinigung", "")
+				.putValue("selbstaendig", true)
+				.putValue("beruf", "Softwareentwickler")
+				;
 
-		assertThat(processInstance).isNotEnded();
-		
-		taskService.complete(task.getId());
-		assertThat(processInstance).isEnded();
+		DmnDecisionTableResult decisionResult = processEngine.getDecisionService()
+				.evaluateDecisionTableByKey("rule_regex", variables);
+
+		assertEquals(true, decisionResult.getSingleResult().getEntry("ergebnis"));
+		assertEquals("0002", decisionResult.getSingleResult().getEntry("nachricht"));
 	}
 
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.8.1">
+  <bpmn:collaboration id="Collaboration_1w2gj9d">
+    <bpmn:participant id="Participant_1rh1iet" processRef="Process_DmnDateCheck" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_DmnDateCheck" name="DMN Date Check" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_1oxyjuh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1oxyjuh" sourceRef="StartEvent_1" targetRef="Task_1er8iat" />
+    <bpmn:businessRuleTask id="Task_1er8iat" name="Check Date Before Today" camunda:expression="${date.before(now())}" camunda:resultVariable="dateBeforeToday">
+      <bpmn:incoming>SequenceFlow_1oxyjuh</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_17kbanb</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="SequenceFlow_17kbanb" sourceRef="Task_1er8iat" targetRef="Task_0062gc3" />
+    <bpmn:scriptTask id="Task_0062gc3" name="Log Before Today" scriptFormat="groovy">
+      <bpmn:incoming>SequenceFlow_17kbanb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_05d0yyh</bpmn:outgoing>
+      <bpmn:script><![CDATA[println "Date before today: " + dateBeforeToday;]]></bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:endEvent id="EndEvent_0w5rifk">
+      <bpmn:incoming>SequenceFlow_05d0yyh</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_05d0yyh" sourceRef="Task_0062gc3" targetRef="EndEvent_0w5rifk" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1w2gj9d">
+      <bpmndi:BPMNShape id="Participant_1rh1iet_di" bpmnElement="Participant_1rh1iet">
+        <dc:Bounds x="123" y="59" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="146" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1oxyjuh_di" bpmnElement="SequenceFlow_1oxyjuh">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="307" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="258" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BusinessRuleTask_18x4dpb_di" bpmnElement="Task_1er8iat">
+        <dc:Bounds x="307" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_17kbanb_di" bpmnElement="SequenceFlow_17kbanb">
+        <di:waypoint xsi:type="dc:Point" x="407" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="483" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="445" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_1g0ju2p_di" bpmnElement="Task_0062gc3">
+        <dc:Bounds x="483" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0w5rifk_di" bpmnElement="EndEvent_0w5rifk">
+        <dc:Bounds x="647" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="665" y="142" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_05d0yyh_di" bpmnElement="SequenceFlow_05d0yyh">
+        <di:waypoint xsi:type="dc:Point" x="583" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="647" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="615" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
