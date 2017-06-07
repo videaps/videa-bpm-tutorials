@@ -14,6 +14,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>camunda-bpm-nexus</id>
+			<name>camunda-bpm-nexus</name>
+			<url>
+      https://app.camunda.com/nexus/content/groups/public
+    </url>
+		</repository>
+	</repositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -66,7 +76,6 @@
 			<version>1.0.0-alpha8</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
