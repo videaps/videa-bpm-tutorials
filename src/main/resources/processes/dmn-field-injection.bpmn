@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.8.1">
+  <bpmn:collaboration id="Collaboration_1f4e2ip">
+    <bpmn:participant id="Participant_1m7pxwg" processRef="Process_DmnFieldInjection" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_DmnFieldInjection" name="DMN Field Injection" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_1qpgrvq</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1qpgrvq" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_0x45koa" />
+    <bpmn:businessRuleTask id="Task_PassInValues" name="Pass in Values To Java Delegate " camunda:class="services.videa.tutorials.bpm.decisions.FieldInjectionDelegate">
+      <bpmn:extensionElements>
+        <camunda:field name="value">        <camunda:string><![CDATA["Oli L. Hock"]]></camunda:string>
+</camunda:field>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0y4od73</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0thqrae</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0p5qjmk" sourceRef="Task_0wazez0" targetRef="ExclusiveGateway_0stv1bp" />
+    <bpmn:parallelGateway id="ExclusiveGateway_0x45koa">
+      <bpmn:incoming>SequenceFlow_1qpgrvq</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0y4od73</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1k4kyyz</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0y4od73" sourceRef="ExclusiveGateway_0x45koa" targetRef="Task_PassInValues" />
+    <bpmn:sequenceFlow id="SequenceFlow_1k4kyyz" sourceRef="ExclusiveGateway_0x45koa" targetRef="Task_PassInValuesToDmn" />
+    <bpmn:businessRuleTask id="Task_PassInValuesToDmn" name="Pass in Values To DMN" camunda:resultVariable="mappedValue" camunda:decisionRef="decision_field_injection" camunda:mapDecisionResult="singleEntry">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="inputValue"><![CDATA[${"O. Hock"}]]></camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1k4kyyz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ghxo5w</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:endEvent id="EndEvent_094tp7z">
+      <bpmn:incoming>SequenceFlow_06yw1sx</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1ghxo5w" sourceRef="Task_PassInValuesToDmn" targetRef="Task_LogMappedValue" />
+    <bpmn:sequenceFlow id="SequenceFlow_1p0fo1v" sourceRef="Task_LogMappedValue" targetRef="ExclusiveGateway_0stv1bp" />
+    <bpmn:scriptTask id="Task_LogMappedValue" name="Log Mapped Value" scriptFormat="groovy">
+      <bpmn:incoming>SequenceFlow_1ghxo5w</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1p0fo1v</bpmn:outgoing>
+      <bpmn:script><![CDATA[println "Log Mapped Value -->";
+println mappedValue;
+println "<--";]]></bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:parallelGateway id="ExclusiveGateway_0stv1bp">
+      <bpmn:incoming>SequenceFlow_1p0fo1v</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0p5qjmk</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_06yw1sx</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_06yw1sx" sourceRef="ExclusiveGateway_0stv1bp" targetRef="EndEvent_094tp7z" />
+    <bpmn:scriptTask id="Task_0wazez0" name="Log Values" scriptFormat="groovy">
+      <bpmn:incoming>SequenceFlow_0thqrae</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0p5qjmk</bpmn:outgoing>
+      <bpmn:script><![CDATA[println "Log Value -->";
+println execution.getVariable("result");
+println "<--";]]></bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0thqrae" sourceRef="Task_PassInValues" targetRef="Task_0wazez0" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1f4e2ip">
+      <bpmndi:BPMNShape id="Participant_1m7pxwg_di" bpmnElement="Participant_1m7pxwg">
+        <dc:Bounds x="123" y="44" width="990" height="432" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="146" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1qpgrvq_di" bpmnElement="SequenceFlow_1qpgrvq">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="306" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="212.5" y="99" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BusinessRuleTask_1m3k4lt_di" bpmnElement="Task_PassInValues">
+        <dc:Bounds x="460" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_094tp7z_di" bpmnElement="EndEvent_094tp7z">
+        <dc:Bounds x="977" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="950" y="142" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0p5qjmk_di" bpmnElement="SequenceFlow_0p5qjmk">
+        <di:waypoint xsi:type="dc:Point" x="738" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="819" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="733.5" y="99" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_00a98k4_di" bpmnElement="Task_0wazez0">
+        <dc:Bounds x="638" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_0kivbn8_di" bpmnElement="ExclusiveGateway_0x45koa">
+        <dc:Bounds x="306" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="331" y="149" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0y4od73_di" bpmnElement="SequenceFlow_0y4od73">
+        <di:waypoint xsi:type="dc:Point" x="356" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="460" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="408" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1k4kyyz_di" bpmnElement="SequenceFlow_1k4kyyz">
+        <di:waypoint xsi:type="dc:Point" x="331" y="145" />
+        <di:waypoint xsi:type="dc:Point" x="331" y="252" />
+        <di:waypoint xsi:type="dc:Point" x="460" y="252" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="346" y="192.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BusinessRuleTask_0mxueb7_di" bpmnElement="Task_PassInValuesToDmn">
+        <dc:Bounds x="460" y="212" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_04jqhcp_di" bpmnElement="ExclusiveGateway_0stv1bp">
+        <dc:Bounds x="819" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="799" y="149" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ghxo5w_di" bpmnElement="SequenceFlow_1ghxo5w">
+        <di:waypoint xsi:type="dc:Point" x="560" y="252" />
+        <di:waypoint xsi:type="dc:Point" x="638" y="252" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="599" y="231" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1p0fo1v_di" bpmnElement="SequenceFlow_1p0fo1v">
+        <di:waypoint xsi:type="dc:Point" x="738" y="252" />
+        <di:waypoint xsi:type="dc:Point" x="844" y="252" />
+        <di:waypoint xsi:type="dc:Point" x="844" y="145" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="746" y="231" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_1fka4ed_di" bpmnElement="Task_LogMappedValue">
+        <dc:Bounds x="638" y="212" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_06yw1sx_di" bpmnElement="SequenceFlow_06yw1sx">
+        <di:waypoint xsi:type="dc:Point" x="869" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="977" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="923" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0thqrae_di" bpmnElement="SequenceFlow_0thqrae">
+        <di:waypoint xsi:type="dc:Point" x="560" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="638" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="599" y="99" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

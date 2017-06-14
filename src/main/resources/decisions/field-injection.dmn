@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="definitions_06mtyam" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="decision_field_injection" name="Field Injection">
+    <decisionTable id="decisionTable">
+      <input id="input1" label="Input Value" camunda:inputVariable="">
+        <inputExpression id="inputExpression1" typeRef="string">        <text>inputValue</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Mapped Value" name="mappedValue" typeRef="string" />
+      <rule id="row-411264190-1">
+        <inputEntry id="UnaryTests_1rz5jhj">        <text><![CDATA["Oli Hock"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0jf5fey">        <text><![CDATA["Oliver Hock"]]></text>
+</outputEntry>
+      </rule>
+      <rule id="row-411264190-2">
+        <inputEntry id="UnaryTests_0rls6f2">        <text><![CDATA["Oliver Hock"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0k0e26g">        <text><![CDATA["Oliver Ludger Hock"]]></text>
+</outputEntry>
+      </rule>
+      <rule id="row-411264190-3">
+        <inputEntry id="UnaryTests_0vfepwf">        <text><![CDATA["O. Hock"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0yu4wrp">        <text><![CDATA["Oliver L. Hock"]]></text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
